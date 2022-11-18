@@ -4,21 +4,21 @@
 
 #include "winmidipp.h"
 
-void print_midi_device_info(unsigned int deviceId, mpp::types::device_info_t& deviceInfo)
+void print_midi_device_info(unsigned int deviceId, mpp::device_info_t& deviceInfo)
 {
 	printf("MIDI Device %i specifiers:\n", deviceId);
-	printf("- Manufacturer ID: %i\n", deviceInfo.wManufacturerId);
-	printf("- Product ID: %i\n", deviceInfo.wProductId);
-	printf("- DriverVersion Major: %x\n", deviceInfo.bDriverVersionMajor);
-	printf("- DriverVersion Minor: %x\n", deviceInfo.bDriverVersionMinor);
-	printf("- Product Name: %s\n", deviceInfo.szName);
+	printf("- Manufacturer ID: %i\n", deviceInfo.manufacturerId);
+	printf("- Product ID: %i\n", deviceInfo.productId);
+	printf("- DriverVersion Major: %x\n", deviceInfo.driverVersionMajor);
+	printf("- DriverVersion Minor: %x\n", deviceInfo.driverVersionMinor);
+	printf("- Product Name: %s\n", deviceInfo.name);
 }
 
 int main()
 {
 	unsigned int deviceAmount;
 	unsigned int i;
-	mpp::types::device_info_t info;
+	mpp::device_info_t info;
 	unsigned int result;
 
 	deviceAmount = mpp::base::get_device_amount();
