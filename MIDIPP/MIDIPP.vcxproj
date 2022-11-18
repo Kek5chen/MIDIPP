@@ -161,10 +161,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="src\winmessages.cpp" />
     <ClCompile Include="src\framework.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\winmidipp.h" />
+    <ClInclude Include="src\winmessages.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

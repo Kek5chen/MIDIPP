@@ -3,8 +3,10 @@
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="src\framework.cpp" />
+    <ClCompile Include="src\winmessages.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\winmidipp.h" />
+    <ClInclude Include="src\winmessages.h" />
   </ItemGroup>
 </Project>
