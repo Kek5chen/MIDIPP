@@ -73,7 +73,7 @@ unsigned int mpp::novation::set_led(midi_handle handle, unsigned char ledX, unsi
 
 unsigned int mpp::novation::reset(midi_handle handle)
 {
-	return base::send_midi(handle, 0xB0, 0, NOVCOLOR(3, 3, 0));
+	return base::send_midi(handle, 0xB0, 0, 0);
 }
 
 unsigned int mpp::start_recording(const midi_handle handle)

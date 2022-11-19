@@ -4,7 +4,11 @@
 
 #define DEVICE_NAME_LEN 32
 #define MIDI_IN_HANDLE int
-#define NOVCOLOR(r,g,m) (((g) & 0x3) << 4 | ((r) & 0x3) | 0b100)
+#define NOVCOLOR(r,g) (((g) & 0x3) << 4 | ((r) & 0x3) | 0b100)
+
+#ifdef _DEBUG
+#define MIDILOG
+#endif
 
 union midi_message {
 	char data[4];
