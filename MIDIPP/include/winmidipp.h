@@ -15,7 +15,7 @@ namespace mpp {
 		short driverVersionMinor;
 		char  name[DEVICE_NAME_LEN];
 	} device_info_t;
-	typedef MIDI_IN_HANDLE handle;
+	typedef MIDI_IN_HANDLE midi_handle;
 	namespace base {
 		WINMIDI_API unsigned int get_device_amount();
 		WINMIDI_API unsigned int get_device_info(device_info_t* device, unsigned int deviceId);
@@ -23,11 +23,11 @@ namespace mpp {
 		WINMIDI_API void         remove_in_callback(midi_callback_t callback);
 		WINMIDI_API void         add_out_callback(midi_callback_t callback);
 		WINMIDI_API void         remove_out_callback(midi_callback_t callback);
-		WINMIDI_API unsigned int open_midi_in(unsigned int deviceId, handle* deviceHandle);
-		WINMIDI_API unsigned int open_midi_out(unsigned int deviceId, handle* deviceHandle);
-		WINMIDI_API void         close_midi_in(handle handle);
-		WINMIDI_API void         close_midi_out(handle handle);
+		WINMIDI_API unsigned int open_midi_in(unsigned int deviceId, midi_handle* deviceHandle);
+		WINMIDI_API unsigned int open_midi_out(unsigned int deviceId, midi_handle* deviceHandle);
+		WINMIDI_API void         close_midi_in(midi_handle handle);
+		WINMIDI_API void         close_midi_out(midi_handle handle);
 	}
-	WINMIDI_API unsigned int start_recording(handle handle);
-	WINMIDI_API unsigned int stop_recording(handle handle);
+	WINMIDI_API unsigned int start_recording(midi_handle handle);
+	WINMIDI_API unsigned int stop_recording(midi_handle handle);
 }

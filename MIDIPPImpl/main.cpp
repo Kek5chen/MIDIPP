@@ -5,6 +5,9 @@
 
 #include "winmidipp.h"
 
+mpp::midi_handle hMidiIn;
+mpp::midi_handle hMidiOut;
+
 void print_midi_device_info(unsigned int deviceId, mpp::device_info_t& deviceInfo)
 {
 	printf("MIDI Device %i specifiers:\n", deviceId);
@@ -48,8 +51,6 @@ int main()
 	unsigned int i;
 	mpp::device_info_t info;
 	unsigned int result;
-	mpp::handle hMidiIn;
-	mpp::handle hMidiOut;
 
 	deviceAmount = mpp::base::get_device_amount();
 	printf("Found %i MIDI compatible devices.\n", deviceAmount);
@@ -68,30 +69,28 @@ int main()
 	}
 	mpp::base::add_in_callback(callback_in);
 	mpp::base::add_out_callback(callback_out);
-	for(i = 0; i < deviceAmount; i++) {
-		result = mpp::base::open_midi_in(i, &hMidiIn);
-		if (result) {
-			printf("Error when opening midi in device with id %i (%x)\n", i, result);
-			exit(1);
-		}
-		result = mpp::start_recording(hMidiIn);
-		if (result) {
-			printf("Error when starting a recording with id %i (%x)\n", i, result);
-			exit(1);
-		}
-		result = mpp::base::open_midi_out(i, &hMidiOut);
-		if (result) {
-			printf("Error when opening midi out device with id %i (%x)\n", i, result);
-			exit(1);
-		}
-		printf("Press Enter to Exit...\n");
-		getchar();
-		result = mpp::stop_recording(hMidiIn);
-		if (result) {
-			printf("Error when stopping a recording with id %i (%x)\n", i, result);
-			exit(1);
-		}
-		mpp::base::close_midi_in(hMidiIn);
-		mpp::base::close_midi_out(hMidiOut);
+	result = mpp::base::open_midi_in(0, &hMidiIn);
+	if (result) {
+		printf("Error when opening midi in device with id %i (%x)\n", 0, result);
+		exit(1);
 	}
+	result = mpp::start_recording(hMidiIn);
+	if (result) {
+		printf("Error when starting a recording with id %i (%x)\n", 0, result);
+		exit(1);
+	}
+	result = mpp::base::open_midi_out(0, &hMidiOut);
+	if (result) {
+		printf("Error when opening midi out device with id %i (%x)\n", 0, result);
+		exit(1);
+	}
+	printf("Press Enter to Exit...\n");
+	getchar();
+	result = mpp::stop_recording(hMidiIn);
+	if (result) {
+		printf("Error when stopping a recording with id %i (%x)\n", 0, result);
+		exit(1);
+	}
+	mpp::base::close_midi_in(hMidiIn);
+	mpp::base::close_midi_out(hMidiOut);
 }

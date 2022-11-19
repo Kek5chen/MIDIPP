@@ -35,27 +35,27 @@ void mpp::base::remove_out_callback(const midi_callback_t callback)
 	messages::unregister_out_callback(callback);
 }
 
-unsigned int mpp::base::open_midi_in(const unsigned int deviceId, handle* deviceHandle)
+unsigned int mpp::base::open_midi_in(const unsigned int deviceId, midi_handle* deviceHandle)
 {
 	return midiInOpen((LPHMIDIIN)deviceHandle, deviceId, (DWORD_PTR) MidiInProc, 0, CALLBACK_FUNCTION);;
 }
 
-unsigned int mpp::base::open_midi_out(const unsigned int deviceId, handle* deviceHandle)
+unsigned int mpp::base::open_midi_out(const unsigned int deviceId, midi_handle* deviceHandle)
 {
 	return midiOutOpen((LPHMIDIOUT)deviceHandle, deviceId, (DWORD_PTR) MidiOutProc, 0, CALLBACK_FUNCTION);
 }
 
-void mpp::base::close_midi_in(const handle handle)
+void mpp::base::close_midi_in(const midi_handle handle)
 {
 	midiInClose((HMIDIIN)handle);
 }
 
-void mpp::base::close_midi_out(const handle handle)
+void mpp::base::close_midi_out(const midi_handle handle)
 {
 	midiOutClose((HMIDIOUT)handle);
 }
 
-unsigned int mpp::start_recording(const handle handle)
+unsigned int mpp::start_recording(const midi_handle handle)
 {
 	unsigned int result;
 
@@ -74,7 +74,7 @@ unsigned int mpp::start_recording(const handle handle)
 	return result;
 }
 
-unsigned int mpp::stop_recording(const handle handle)
+unsigned int mpp::stop_recording(const midi_handle handle)
 {
 	unsigned int result;
 
