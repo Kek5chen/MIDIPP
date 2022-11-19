@@ -3,7 +3,13 @@
 #define WINMIDI_API __declspec(dllexport)
 
 #define DEVICE_NAME_LEN 32
-#define MIDI_IN_HANDLE void*
+#define MIDI_IN_HANDLE int
+#define NOVCOLOR(r,g,m) (((g) & 0x3) << 4 | ((r) & 0x3) | 0b100)
+
+union midi_message {
+	char data[4];
+	int message;
+};
 
 typedef void (*midi_callback_t)(unsigned char firstData, unsigned char secondData, unsigned char status);
 
@@ -25,8 +31,13 @@ namespace mpp {
 		WINMIDI_API void         remove_out_callback(midi_callback_t callback);
 		WINMIDI_API unsigned int open_midi_in(unsigned int deviceId, midi_handle* deviceHandle);
 		WINMIDI_API unsigned int open_midi_out(unsigned int deviceId, midi_handle* deviceHandle);
+		WINMIDI_API unsigned int send_midi(midi_handle handle, unsigned char status, unsigned char firstData, unsigned char secondData);
 		WINMIDI_API void         close_midi_in(midi_handle handle);
 		WINMIDI_API void         close_midi_out(midi_handle handle);
+	}
+	namespace novation {
+		WINMIDI_API unsigned int set_led(midi_handle handle, unsigned char ledX, unsigned char ledY, unsigned char color);
+		WINMIDI_API unsigned int reset(midi_handle handle);
 	}
 	WINMIDI_API unsigned int start_recording(midi_handle handle);
 	WINMIDI_API unsigned int stop_recording(midi_handle handle);

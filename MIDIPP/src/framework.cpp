@@ -45,14 +45,35 @@ unsigned int mpp::base::open_midi_out(const unsigned int deviceId, midi_handle* 
 	return midiOutOpen((LPHMIDIOUT)deviceHandle, deviceId, (DWORD_PTR) MidiOutProc, 0, CALLBACK_FUNCTION);
 }
 
+unsigned int mpp::base::send_midi(midi_handle handle, unsigned char status, unsigned char firstData, unsigned char secondData)
+{
+	midi_message msg{};
+	msg.data[0] = status;
+	msg.data[1] = firstData;
+	msg.data[2] = secondData;
+	return midiOutShortMsg((HMIDIOUT)handle, msg.message);
+}
+
 void mpp::base::close_midi_in(const midi_handle handle)
 {
+	midiInReset((HMIDIIN)handle);
 	midiInClose((HMIDIIN)handle);
 }
 
 void mpp::base::close_midi_out(const midi_handle handle)
 {
+	midiOutReset((HMIDIOUT)handle);
 	midiOutClose((HMIDIOUT)handle);
+}
+
+unsigned int mpp::novation::set_led(midi_handle handle, unsigned char ledX, unsigned char ledY, unsigned char color)
+{
+	return base::send_midi(handle, (char) 0x90, (char)((ledY & 0xF) << 4 | (ledX & 0xF)), color);
+}
+
+unsigned int mpp::novation::reset(midi_handle handle)
+{
+	return base::send_midi(handle, 0xB0, 0, NOVCOLOR(3, 3, 0));
 }
 
 unsigned int mpp::start_recording(const midi_handle handle)

@@ -21,6 +21,10 @@ void print_midi_device_info(unsigned int deviceId, mpp::device_info_t& deviceInf
 /* controller for a Novation Launchpad (Tested on Launchpad Mini) */
 void callback_in(unsigned char firstData, unsigned char secondData, unsigned char status)
 {
+	char posX;
+	char posY;
+	bool pressed;
+
 	if (status != 0x90 && status != 0xB0) {
 		printf("Received: firstData: 0x%02X, secondData: 0x%02X, status: 0x%02X\n",
 			firstData,
@@ -28,16 +32,19 @@ void callback_in(unsigned char firstData, unsigned char secondData, unsigned cha
 			status);
 		return;
 	}
-	if (status == 0x90)
+	posX = secondData & 0xF;
+	posY = secondData >> 4 & 0xF;
+	pressed = firstData == 0x7F;
+	if (status == 0x90) {
 		printf("User %s launchkey X: %d, Y: %d\n",
-			firstData == 0x7F ? "pressed" : "released",
-			secondData >> 4 & 0xF,
-			secondData & 0xF);
-	else
+			pressed ? "pressed" : "released", posX, posY);
+	} else {
 		printf("User %s extra-key X: %d, Y: %d\n",
-			firstData == 0x7F ? "pressed" : "released",
-			secondData >> 4 & 0xF,
-			secondData & 0xF);
+			pressed ? "pressed" : "released", posX, posY);
+	}
+	if(mpp::novation::set_led(hMidiOut, posX, posY, pressed ? NOVCOLOR(3, 0) : NOVCOLOR(0, 0))) {
+		printf("error switching led color\n");
+	}
 }
 
 void callback_out(unsigned char firstData, unsigned char secondData, unsigned char status)
@@ -79,11 +86,12 @@ int main()
 		printf("Error when starting a recording with id %i (%x)\n", 0, result);
 		exit(1);
 	}
-	result = mpp::base::open_midi_out(0, &hMidiOut);
+	result = mpp::base::open_midi_out(1, &hMidiOut);
 	if (result) {
 		printf("Error when opening midi out device with id %i (%x)\n", 0, result);
 		exit(1);
 	}
+	std::this_thread::sleep_for(std::chrono::seconds(1));
 	printf("Press Enter to Exit...\n");
 	getchar();
 	result = mpp::stop_recording(hMidiIn);
