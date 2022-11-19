@@ -15,12 +15,29 @@ void print_midi_device_info(unsigned int deviceId, mpp::device_info_t& deviceInf
 	printf("- Product Name: %s\n", deviceInfo.name);
 }
 
-void callback_in()
+/* controller for a Novation Launchpad (Tested on Launchpad Mini) */
+void callback_in(unsigned char firstData, unsigned char secondData, unsigned char status)
 {
-	printf("User defined in-callback got called\n");
+	if (status != 0x90 && status != 0xB0) {
+		printf("Received: firstData: 0x%02X, secondData: 0x%02X, status: 0x%02X\n",
+			firstData,
+			secondData,
+			status);
+		return;
+	}
+	if (status == 0x90)
+		printf("User %s launchkey X: %d, Y: %d\n",
+			firstData == 0x7F ? "pressed" : "released",
+			secondData >> 4 & 0xF,
+			secondData & 0xF);
+	else
+		printf("User %s extra-key X: %d, Y: %d\n",
+			firstData == 0x7F ? "pressed" : "released",
+			secondData >> 4 & 0xF,
+			secondData & 0xF);
 }
 
-void callback_out()
+void callback_out(unsigned char firstData, unsigned char secondData, unsigned char status)
 {
 	printf("User defined out-callback got called\n");
 }
@@ -57,13 +74,23 @@ int main()
 			printf("Error when opening midi in device with id %i (%x)\n", i, result);
 			exit(1);
 		}
+		result = mpp::start_recording(hMidiIn);
+		if (result) {
+			printf("Error when starting a recording with id %i (%x)\n", i, result);
+			exit(1);
+		}
 		result = mpp::base::open_midi_out(i, &hMidiOut);
 		if (result) {
 			printf("Error when opening midi out device with id %i (%x)\n", i, result);
 			exit(1);
 		}
-		printf("Closing In/Out Handles in 2 seconds\n");
-		std::this_thread::sleep_for(std::chrono::seconds(2));
+		printf("Press Enter to Exit...\n");
+		getchar();
+		result = mpp::stop_recording(hMidiIn);
+		if (result) {
+			printf("Error when stopping a recording with id %i (%x)\n", i, result);
+			exit(1);
+		}
 		mpp::base::close_midi_in(hMidiIn);
 		mpp::base::close_midi_out(hMidiOut);
 	}

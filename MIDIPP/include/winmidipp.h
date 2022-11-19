@@ -5,7 +5,7 @@
 #define DEVICE_NAME_LEN 32
 #define MIDI_IN_HANDLE void*
 
-typedef void (*midi_callback_t)();
+typedef void (*midi_callback_t)(unsigned char firstData, unsigned char secondData, unsigned char status);
 
 namespace mpp {
 	typedef struct device_info_s {
@@ -28,4 +28,6 @@ namespace mpp {
 		WINMIDI_API void         close_midi_in(handle handle);
 		WINMIDI_API void         close_midi_out(handle handle);
 	}
+	WINMIDI_API unsigned int start_recording(handle handle);
+	WINMIDI_API unsigned int stop_recording(handle handle);
 }
