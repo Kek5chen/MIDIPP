@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <chrono>
 #include <thread>
+#include <Windows.h>
 
 #include "winmidipp.h"
 
@@ -91,9 +92,40 @@ int main()
 		printf("Error when opening midi out device with id %i (%x)\n", 0, result);
 		exit(1);
 	}
-	std::this_thread::sleep_for(std::chrono::seconds(1));
+	mpp::novation::reset(hMidiOut);
 	printf("Press Enter to Exit...\n");
-	getchar();
+	bool stop = false;
+	while (!GetAsyncKeyState(VK_RETURN)) {
+		for(unsigned int y = 0; y < 8; y++) {
+			for(unsigned int x = 0; x < 9; x++) {
+				mpp::novation::set_led(hMidiOut, x, y, NOVCOLOR(3, 0));
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+				if (GetAsyncKeyState(VK_RETURN) || stop) {
+					stop = true;
+					break;
+				}
+			}
+			if (stop)
+				break;
+		}
+		if (stop)
+			break;
+		for(unsigned int y = 0; y < 8; y++) {
+			for(unsigned int x = 0; x < 9; x++) {
+				mpp::novation::set_led(hMidiOut, x, y, NOVCOLOR(0, 0));
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+				if (GetAsyncKeyState(VK_RETURN) || stop) {
+					stop = true;
+					break;
+				}
+			}
+			if (stop)
+				break;
+		}
+		if (stop)
+			break;
+	}
+	mpp::novation::reset(hMidiOut);
 	result = mpp::stop_recording(hMidiIn);
 	if (result) {
 		printf("Error when stopping a recording with id %i (%x)\n", 0, result);
