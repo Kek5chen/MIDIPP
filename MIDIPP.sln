@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MIDIPPImpl", "MIDIPPImpl\MI
 		{0EAC9BFC-114F-4CBD-911B-CD1596761A48} = {0EAC9BFC-114F-4CBD-911B-CD1596761A48}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NovationRain", "NovationRain\NovationRain.vcxproj", "{F3956774-4261-4F31-A289-5306CEC9BCCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -34,6 +36,14 @@ Global
 		{EC5E5A20-D02D-447E-8D8C-97ED46886FC2}.Release|x64.Build.0 = Release|x64
 		{EC5E5A20-D02D-447E-8D8C-97ED46886FC2}.Release|x86.ActiveCfg = Release|Win32
 		{EC5E5A20-D02D-447E-8D8C-97ED46886FC2}.Release|x86.Build.0 = Release|Win32
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Debug|x64.ActiveCfg = Debug|x64
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Debug|x64.Build.0 = Debug|x64
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Debug|x86.ActiveCfg = Debug|Win32
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Debug|x86.Build.0 = Debug|Win32
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Release|x64.ActiveCfg = Release|x64
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Release|x64.Build.0 = Release|x64
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Release|x86.ActiveCfg = Release|Win32
+		{F3956774-4261-4F31-A289-5306CEC9BCCC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
