@@ -2,8 +2,13 @@
 
 #define WINMIDI_API __declspec(dllexport)
 
+#ifdef _M_X64
+#define MIDI_IN_HANDLE unsigned long long
+#else
+#define MIDI_IN_HANDLE unsigned int
+#endif
+
 #define DEVICE_NAME_LEN 32
-#define MIDI_IN_HANDLE int
 #define NOVCOLOR(r,g) (((g) & 0x3) << 4 | ((r) & 0x3) | 0b100)
 
 #ifdef _DEBUG

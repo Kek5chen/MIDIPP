@@ -36,7 +36,11 @@ void CALLBACK MidiInProc(HMIDIIN hMidiIn, UINT wMsg, DWORD_PTR dwInstance, DWORD
 		if (midihdr->dwFlags & MHDR_PREPARED)
 			printf("MHDR_PREPARED\n");
 	} else
+#ifdef _M_X64
+		printf("RECEIVED UNKNOWN IN MESSAGE WITH PARAMETERS: %08x %08llx %08llx %08llx\n", wMsg, dwInstance, dwParam1, dwParam2);
+#else
 		printf("RECEIVED UNKNOWN IN MESSAGE WITH PARAMETERS: %08x %08x %08x %08x\n", wMsg, dwInstance, dwParam1, dwParam2);
+#endif
 #endif
 }
 
@@ -48,7 +52,11 @@ void CALLBACK MidiOutProc(HMIDIOUT hmo, UINT wMsg, DWORD_PTR dwInstance, DWORD_P
 	else if (wMsg == MOM_CLOSE)
 		printf("Received Out-Close Message\n");
 	else
+#ifdef _M_X64
+		printf("RECEIVED UNKNOWN IN MESSAGE WITH PARAMETERS: %08x %08llx %08llx %08llx\n", wMsg, dwInstance, dwParam1, dwParam2);
+#else
 		printf("RECEIVED UNKNOWN IN MESSAGE WITH PARAMETERS: %08x %08x %08x %08x\n", wMsg, dwInstance, dwParam1, dwParam2);
+#endif
 #endif
 	
 	for(midi_callback_t callback : midi_out_callbacks) {
